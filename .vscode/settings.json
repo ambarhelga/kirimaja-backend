@@ -1,0 +1,7 @@
+{
+  "prisma.pinToPrisma6": true,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "files.eol": "\n",
+  "chat.disableAIFeatures": false
+}
