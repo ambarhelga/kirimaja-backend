@@ -1,26 +1,58 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateBranchDto } from './dto/create-branch.dto';
 import { UpdateBranchDto } from './dto/update-branch.dto';
+import { PrismaService } from '../../common/prisma/prisma.service';
+import { Branch } from '@prisma/client';
 
 @Injectable()
 export class BranchesService {
-  create(createBranchDto: CreateBranchDto) {
-    return 'This action adds a new branch';
-  }
+    constructor(private readonly prismaService: PrismaService) {}
+    async create(createBranchDto: CreateBranchDto): Promise<Branch> {
+        void createBranchDto;
+        const branch = await this.prismaService.branch.create({
+            data: {
+                name: createBranchDto.name,
+                address: createBranchDto.address,
+                phoneNumber: createBranchDto.phone_number,
+            },
+        });
+        return branch;
+    }
 
-  findAll() {
-    return `This action returns all branches`;
-  }
+    async findAll(): Promise<Branch[]> {
+        const branches = await this.prismaService.branch.findMany();
+        return branches;
+    }
 
-  findOne(id: number) {
-    return `This action returns a #${id} branch`;
-  }
+    async findOne(id: number): Promise<Branch | null> {
+        const branch = await this.prismaService.branch.findUnique({
+            where: { id },
+        });
+        if (!branch) {
+            throw new NotFoundException(`Branch with id ${id} not found`);
+        }
+        return branch;
+    }
 
-  update(id: number, updateBranchDto: UpdateBranchDto) {
-    return `This action updates a #${id} branch`;
-  }
+    async update(
+        id: number,
+        updateBranchDto: UpdateBranchDto,
+    ): Promise<Branch> {
+        await this.findOne(id);
+        return this.prismaService.branch.update({
+            where: { id },
+            data: {
+                name: updateBranchDto.name,
+                address: updateBranchDto.address,
+                phoneNumber: updateBranchDto.phone_number,
+            },
+        });
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} branch`;
-  }
+    async remove(id: number): Promise<void> {
+        await this.findOne(id);
+        await this.prismaService.branch.delete({
+            where: { id },
+        });
+    }
 }

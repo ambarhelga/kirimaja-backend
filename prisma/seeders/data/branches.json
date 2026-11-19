@@ -1,0 +1,29 @@
+{
+    "data":[
+        {
+            "name" : "Cabang Jakarta Pusat",
+            "address" : "Jl. Thamrin No. 1, Jakarta Pusat",
+            "phoneNumber" : "021-1234567"
+        },
+        {
+            "name" : "Cabang Surabaya",
+            "address" : "Jl. Sudirman No. 2, Surabaya",
+            "phoneNumber" : "031-2345678"
+        },
+        {
+            "name" : "Cabang Bandung",
+            "address" : "Jl. Gatot Subroto No. 3, Bandung",
+            "phoneNumber" : "022-3456789"
+        },
+        {
+            "name" : "Cabang Malang",
+            "address" : "Jl. MT Haryono No. 4, Malang",
+            "phoneNumber" : "0341-4567890"
+        },
+        {
+            "name" : "Cabang Tangerang Selatan",
+            "address" : "Jl. Pluit No. 5, Tangerang Selatan",
+            "phoneNumber" : "021-5678901"
+        }
+    ]
+}

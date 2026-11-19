@@ -3,18 +3,18 @@ import { BranchesController } from './branches.controller';
 import { BranchesService } from './branches.service';
 
 describe('BranchesController', () => {
-  let controller: BranchesController;
+    let controller: BranchesController;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [BranchesController],
-      providers: [BranchesService],
-    }).compile();
+    beforeEach(async () => {
+        const module: TestingModule = await Test.createTestingModule({
+            controllers: [BranchesController],
+            providers: [BranchesService],
+        }).compile();
 
-    controller = module.get<BranchesController>(BranchesController);
-  });
+        controller = module.get<BranchesController>(BranchesController);
+    });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
+    it('should be defined', () => {
+        expect(controller).toBeDefined();
+    });
 });

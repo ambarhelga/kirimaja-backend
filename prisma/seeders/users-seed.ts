@@ -2,13 +2,27 @@ import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import * as fs from 'fs';
 import * as path from 'path';
+import { z } from 'zod';
 
 const prisma = new PrismaClient();
+
+const usersDataSchema = z.object({
+    data: z.array(
+        z.object({
+            name: z.string(),
+            email: z.string(),
+            password: z.string(),
+            phoneNumber: z.string(),
+            roleKey: z.string(),
+            avatar: z.string().optional(),
+        }),
+    ),
+});
 
 export async function usersSeed() {
     const usersPath = path.resolve(__dirname, 'data', 'users.json');
     const usersRaw = fs.readFileSync(usersPath, 'utf-8');
-    const users = JSON.parse(usersRaw).data;
+    const { data: users } = usersDataSchema.parse(JSON.parse(usersRaw));
 
     for (const user of users) {
         const role = await prisma.role.findFirst({
@@ -41,14 +55,21 @@ export async function usersSeed() {
     }
 }
 
+async function runUsersSeed() {
+    try {
+        await usersSeed();
+    } catch (error) {
+        console.error(error);
+        process.exitCode = 1;
+    } finally {
+        await prisma.$disconnect();
+    }
+}
+
 // For running directly
 if (require.main === module) {
-    usersSeed()
-        .catch((e) => {
-            console.error(e);
-            process.exit(1);
-        })
-        .finally(async () => {
-            await prisma.$disconnect();
-        });
+    void runUsersSeed().catch((error: unknown) => {
+        console.error(error);
+        process.exitCode = 1;
+    });
 }
